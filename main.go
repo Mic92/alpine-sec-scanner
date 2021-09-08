@@ -32,6 +32,8 @@ func main() {
 		insecurePkgs[secPkg.Pkg.Name] = secPkg
 	}
 
+	foundInsecure := false
+
 	for _, p := range pkgs {
 		currentVersion, err := version.NewVersion(p.Version)
 		if err != nil {
@@ -52,7 +54,11 @@ func main() {
 			}
 		    if len(allCves) > 0 {
 				fmt.Printf("insecure package: %s (%s)\n", p.Name, strings.Join(allCves, ","))
+				foundInsecure = true
 			}
 		}
+	}
+	if !foundInsecure {
+		fmt.Printf("no known insecure packages found\n")
 	}
 }
